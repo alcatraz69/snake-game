@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import useKeyPress from './utils/useKeyPress';
 import useInterval from './utils/useInterval';
 import Cell from '../Cell/index';
@@ -113,7 +113,7 @@ const Board = () => {
     moveBodyAndTail();
   };
 
-  const handleKeyDown = (key) => {
+  const handleKeyDown = useCallback((key) => {
     if (!changeDirection) {
       setChangeDirection(true);
       switch (key) {
@@ -141,7 +141,7 @@ const Board = () => {
           break;
       }
     }
-  };
+  },[changeDirection,direction]);
 
   const handleGameStateSwitch = () => {
     if (gameState === 'started') {
@@ -165,7 +165,7 @@ const Board = () => {
     if (keyPressed) {
       handleKeyDown(keyPressed);
     }
-  }, [keyPressed]);
+  }, [keyPressed,handleKeyDown]);
 
   useInterval(
     () => {
